@@ -1,8 +1,7 @@
-import { Geist } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
-
-const geist = Geist({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'DupeFinder — Find Fashion & Beauty Dupes',
@@ -12,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geist.className} bg-black`}>
+      <body className={`${inter.className} bg-black`}>
         <Navbar />
         <div className="pt-16"> {/* pushes content below fixed navbar */}
           {children}

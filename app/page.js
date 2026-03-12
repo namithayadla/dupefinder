@@ -33,7 +33,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4">
       <div className="mb-2 text-sm tracking-widest text-zinc-500 uppercase">Introducing</div>
-      <h1 className="text-6xl font-bold mb-3 tracking-tight">dupefinder</h1>
+      <h1 className="text-6xl font-bold mb-3 tracking-tight">
+        <span className="inline-block -skew-x-6 font-bold">dupe</span>
+        <span className="font-bold tracking-tight">IT.</span>
+      </h1>
       <p className="text-zinc-400 text-lg mb-12 text-center max-w-md">Find fashion & beauty dupes instantly. Verified sellers. Best time to buy.</p>
       <form onSubmit={handleSearch} className="w-full max-w-2xl mb-4">
         <div className="flex gap-2">
