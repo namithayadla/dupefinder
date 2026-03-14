@@ -1,12 +1,20 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { Inter } from 'next/font/google'
 
+const inter = Inter({ subsets: ['latin'], weight: ['900'] })
 export default function Home() {
   const [url, setUrl] = useState('')
   const [dragging, setDragging] = useState('')
+  const [profile, setProfile] = useState(null)
   const router = useRouter()
-
+  useEffect(() => {
+    const saved = localStorage.getItem('styleProfile')
+    if(saved) {
+      setProfile(JSON.parse(saved))
+    }
+  }, [])
   function handleSearch(e) {
     e.preventDefault()
     if(!url.trim) {
@@ -32,6 +40,27 @@ export default function Home() {
   }
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4">
+      {profile?.colorSeason && (
+        <div className="mb-8 px-5 py-3 border border-zinc-800 rounded-2xl text-center">
+          <p className="text-zinc-500 text-xs mb-1">Your color profile</p>
+          <p className="text-white font-semibold text-lg">{profile.colorSeason}</p>
+          <p className="text-zinc-500 text-xs mt-0.5">
+            {SEASON_PALETTES[profile.colorSeason]?.description}
+          </p>
+          {profile.secondarySeasons?.length > 0 && (
+            <div className="flex gap-2 justify-center mt-3">
+              {profile.secondarySeasons.map(s => (
+                <span
+                  key={s}
+                  className="text-xs border border-zinc-700 text-zinc-400 px-3 py-1 rounded-full"
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       <div className="mb-2 text-sm tracking-widest text-zinc-500 uppercase">Introducing</div>
       <h1 className="text-6xl font-bold mb-3 tracking-tight">
         <span className="inline-block -skew-x-6 font-bold">dupe</span>
