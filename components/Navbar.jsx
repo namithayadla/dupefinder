@@ -19,7 +19,7 @@ export default function NavBar() {
             <span className={`${inter.className} text-3xl font-black tracking-tight`}>syft</span>
             </Link>
             <div className="hidden md:flex items-center gap-6 text-sm text-zinc-400">
-                <Link href="/foryou/swipe" className="hover:text-white transition">Made For You</Link>
+                <Link href="/foryou" className="hover:text-white transition">Made For You</Link>
                 <Link href="/results?q=trending" className="hover:text-white transition">Trending</Link>
                 <Link href="/wishlist" className="hover:text-white transition">Wishlist</Link>
                 <Link href="/" className="hover:text-white transition">dupeIT</Link>

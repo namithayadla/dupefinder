@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Inter } from 'next/font/google'
+import { SEASON_PALETTES } from "@/lib/colorSeason"
+import { calcColorSeason, calcSeasonProfile } from '@/lib/colorSeason'
 
 const inter = Inter({ subsets: ['latin'], weight: ['900'] })
 export default function Home() {
