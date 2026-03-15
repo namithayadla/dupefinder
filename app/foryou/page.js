@@ -30,12 +30,14 @@ export default function ForYou() {
         body: JSON.stringify({
           styles: p.style || [],
           categories: p.categories || [],
-          colorSeason: p.colorSeason || 'Spring Bright',
+          colorSeason: p.colorSeason || null,
           budget: p.budget?.[0] || 'budget_any',
           swipeTags: p.swipeProfile?.likedTags || [],
         })
       })
-      const data = await res.json()
+      const text = await res.text()
+
+      const data = JSON.parse(text)
       setProducts(data.products || [])
     } catch (err) {
       console.error(err)
@@ -52,7 +54,6 @@ export default function ForYou() {
   return (
     <main className="min-h-screen bg-black text-white px-4 pt-6 pb-24 max-w-2xl mx-auto">
 
-      {/* Header */}
       <div className="mb-6">
         <p className="text-zinc-500 text-xs tracking-widest uppercase mb-1">curated for you</p>
         <h1 className="text-2xl font-bold">Your Feed</h1>
@@ -63,7 +64,6 @@ export default function ForYou() {
         )}
       </div>
 
-      {/* Syft more button */}
       <Link
         href="/foryou/swipe"
         className="flex items-center gap-2 w-full border border-zinc-800 rounded-2xl px-4 py-3 mb-6 hover:border-zinc-600 transition group"
@@ -73,7 +73,6 @@ export default function ForYou() {
         <span className="ml-auto text-zinc-600 group-hover:text-zinc-400 text-xs">→</span>
       </Link>
 
-      {/* Filters */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-1 scrollbar-hide">
         {filters.map(f => (
           <button
@@ -90,7 +89,6 @@ export default function ForYou() {
         ))}
       </div>
 
-      {/* Feed */}
       {loading ? (
         <div className="grid grid-cols-2 gap-3">
           {[1,2,3,4,5,6].map(i => (
@@ -119,16 +117,12 @@ export default function ForYou() {
   )
 }
 
-// ─────────────────────────────────────────────
-// Feed Card Component
-// ─────────────────────────────────────────────
 function ForYouCard({ product }) {
   const [wishlisted, setWishlisted] = useState(false)
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition group">
 
-      {/* Image */}
       <div className="relative aspect-[3/4] overflow-hidden">
         {product.image ? (
           <img
@@ -142,7 +136,6 @@ function ForYouCard({ product }) {
           </div>
         )}
 
-        {/* Wishlist button */}
         <button
           onClick={() => setWishlisted(w => !w)}
           className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition"
@@ -153,7 +146,6 @@ function ForYouCard({ product }) {
           </svg>
         </button>
 
-        {/* Tag pill */}
         <div className="absolute bottom-2 left-2">
           <span className="text-xs bg-black/50 backdrop-blur-sm text-zinc-300 px-2 py-0.5 rounded-full capitalize">
             {product.tag}
@@ -161,7 +153,6 @@ function ForYouCard({ product }) {
         </div>
       </div>
 
-      {/* Info */}
       <div className="p-3">
         <p className="text-zinc-500 text-xs mb-0.5 truncate">{product.brand}</p>
         <p className="text-white text-xs font-medium leading-snug line-clamp-2 mb-2">
@@ -177,14 +168,12 @@ function ForYouCard({ product }) {
             {product.price > 0 ? `$${product.price}` : '—'}
           </span>
           <div className="flex gap-1.5">
-            {/* Find Dupe */}
             <Link
               href={`/results?q=${encodeURIComponent(product.name)}`}
               className="text-xs border border-zinc-700 text-zinc-400 px-2 py-1 rounded-lg hover:border-zinc-500 hover:text-white transition"
             >
               dupe
             </Link>
-            {/* Shop */}
             <a
               href={product.url}
               target="_blank"
@@ -196,7 +185,6 @@ function ForYouCard({ product }) {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

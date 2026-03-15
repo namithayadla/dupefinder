@@ -14,7 +14,7 @@ export default function SwipePage() {
     const [dragOffset, setDragOffset] = useState(0)
 
     useEffect(() => {
-        const profile = JSON.parse(localStorage.getitem('styleProfile') || '{}')
+        const profile = JSON.parse(localStorage.getItem('styleProfile') || '{}')
         fetchCards(profile, 0)
     }, [])
 

@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
     const body = await request.json()
-    const { styles, categories, colorSeason, secondarySeasons, budget, swipeTags } = body
+    const { styles, categories, colorSeason, secondarySeasons, allSeasons, budget, swipeTags } = body
 
     // build queries from ALL seasons not just primary
-    const allSeasons = [colorSeason, ...(secondarySeasons || [])].filter(Boolean)
+    //const allSeasons = [colorSeason, ...(secondarySeasons || [])].filter(Boolean)
     const queries = buildQueries({ styles, categories, allSeasons, budget, swipeTags })
     try {
         const results = await Promise.all(
@@ -39,6 +39,7 @@ export async function POST(request) {
             return true
         })
         const shuffled = deduped.sort(() => Math.random() - 0.5)
+        
         return NextResponse.json({products: shuffled})
     } catch (error) {
         console.error('For You error:', error)
@@ -107,9 +108,13 @@ function buildQueries({styles, categories, colorSeason, budget, swipeTags}) {
           'charcoal coord women'
         ],
     }
-    const colors = seasonColors[colorSeason] || seasonColors['Spring Bright']
-    colors.slice(0, 2).forEach(color => {
-        queries.push({query: color, tag: colorSeason, category: 'clothing'})
+    const seasonsToQuery = allSeasons?.length > 0 ? allSeasons : [colorSeason].filter(Boolean)
+    seasonsToQuery.forEach((season, i) => {
+    const colors = seasonColors[season] || []
+    const count = i === 0 ? 3 : 1
+    colors.slice(0, count).forEach(color => {
+        queries.push({ query: color, tag: season, category: 'clothing' })
+    })
     })
     const styleQueries = {
         quiet: ['quiet luxury outfit', 'minimalist neutral set', 'old money aesthetic clothing'],
