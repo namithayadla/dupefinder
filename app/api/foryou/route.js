@@ -15,7 +15,7 @@ export async function POST(request) {
                 )
                 const data = await res.json()
                 return (data.shopping_results || []).slice(0, 3).map((item, i) => ({
-                    id: `${q.tag}-${i}`,
+                    id: `${q.tag || 'item'}-${i}-${Math.random().toString(36).slice(2, 7)}`,
                     name: item.title,
                     brand: item.source,
                     price: parseFloat(item.price?.replace(/[^0-9.]/g, '')) || 0,
@@ -29,7 +29,16 @@ export async function POST(request) {
             })
         )
         const flat = results.flat()
-        const shuffled = flat.sort(() => Math.random() - 0.5)
+        const seen = new Set()
+        const deduped = flat.filter(item => {
+            const key = item.name?.toLowerCase().slice(0, 30)
+            if(seen.has(key)) {
+                return false
+            }
+            seen.add(key)
+            return true
+        })
+        const shuffled = deduped.sort(() => Math.random() - 0.5)
         return NextResponse.json({products: shuffled})
     } catch (error) {
         console.error('For You error:', error)
@@ -39,13 +48,64 @@ export async function POST(request) {
 function buildQueries({styles, categories, colorSeason, budget, swipeTags}) {
     const queries = []
     const seasonColors = {
-        'Spring Light': ['ivory top', 'peach dress', 'cream blazer'],
-        'Spring Bright': ['coral top', 'warm red dress', 'bright yellow coord'],
-        'Summer Light': ['lavender top', 'dusty rose dress', 'powder blue set'],
-        'Summer Soft': ['mauve blouse', 'soft pink coord', 'cool grey outfit'],
-        'Autumn Deep': ['rust coat', 'olive jacket', 'camel coord', 'terracotta dress'],
-        'Winter Deep': ['emerald blazer', 'true red dress', 'royal blue top'],
-        'Winter Dark': ['black coord', 'deep plum dress', 'jewel tone blazer'],
+        'Spring Bright': [
+          'coral linen top women', 
+          'emerald green blazer women',
+          'warm red midi dress women',
+          'papaya orange coord women',
+          'bright coral set women 2026'
+        ],
+        'Spring Light': [
+          'ivory linen set women',
+          'cream blazer women minimal',
+          'soft peach dress women',
+          'warm white coord women',
+        ],
+        'Autumn True': [
+          'rust coat women fall',
+          'olive green jacket women',
+          'camel coord women',
+          'terracotta dress women',
+          'mustard knit women'
+        ],
+        'Autumn Dark': [
+          'chocolate brown coat women',
+          'deep olive outfit women',
+          'espresso leather jacket women',
+          'dark rust set women'
+        ],
+        'Summer Light': [
+          'lavender set women',
+          'powder blue top women',
+          'dusty rose dress women',
+          'soft pink coord women'
+        ],
+        'Summer True': [
+          'mauve blouse women',
+          'dusty rose coord women',
+          'cool blue midi dress women'
+        ],
+        'Summer Soft': [
+          'greige set women',
+          'soft sage outfit women',
+          'muted lavender coord women'
+        ],
+        'Winter True': [
+          'black coord women minimal',
+          'emerald blazer women',
+          'true red dress women',
+          'navy set women'
+        ],
+        'Winter Bright': [
+          'hot pink coord women',
+          'royal blue set women',
+          'bright red outfit women'
+        ],
+        'Winter Dark': [
+          'deep plum outfit women',
+          'midnight navy set women',
+          'charcoal coord women'
+        ],
     }
     const colors = seasonColors[colorSeason] || seasonColors['Spring Bright']
     colors.slice(0, 2).forEach(color => {
