@@ -115,14 +115,18 @@ export async function GET(request) {
 }
 
 function extractBrand(query) {
-  const stopWords = ['moisturizer', 'serum', 'cleanser', 'cream', 'lotion',
-    'leggings', 'sneakers', 'bag', 'foundation', 'toner', 'mask',
-    'the', 'for', 'and', 'with', 'best', 'dupe']
-
-  return query
-    .toLowerCase()
-    .split(' ')
-    .filter(word => word.length > 3 && !stopWords.includes(word))
+    const stopWords = [
+      'moisturizer', 'serum', 'cleanser', 'cream', 'lotion',
+      'leggings', 'sneakers', 'bag', 'foundation', 'toner', 'mask',
+      'blush', 'lipstick', 'eyeshadow', 'powder', 'setting',
+      'the', 'for', 'and', 'with', 'best', 'dupe', 'pocket',
+      'buildable', 'hydrating', 'bottled', 'jarred', 'packaged', 'goods'
+    ]
+  
+    return query
+      .toLowerCase()
+      .split(' ')
+      .filter(word => word.length > 2 && !stopWords.includes(word))
 }
 
 function calcDupeScore(item, ingredientMatch, savingsPct) {

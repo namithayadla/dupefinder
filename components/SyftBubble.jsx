@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function SyftBubble() {
     const pathname = usePathname()
-    if (pathname.includes('/swipe') || pathname.includes('/quiz')) {
+    if (pathname.includes('/swipe') || pathname.includes('/quiz') || pathname === '/dupes') {
         return null
     }
     return (

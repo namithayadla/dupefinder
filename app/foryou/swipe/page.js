@@ -1,15 +1,49 @@
 'use client'
 import { useState, useRef, useEffect } from "react"
 import {useRouter} from 'next/navigation'
-
+const FALLBACK_CARDS = [
+    {
+      id: 'fallback-1',
+      name: 'Minimalist linen set',
+      label: 'Minimalist linen set',
+      brand: 'Quince',
+      price: 49,
+      image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600',
+      url: 'https://quince.com',
+      tags: ['minimal', 'clean girl', 'neutral'],
+      category: 'clothing'
+    },
+    {
+      id: 'fallback-2',
+      name: 'Glass skin serum',
+      label: 'Glass skin serum',
+      brand: 'The Ordinary',
+      price: 12,
+      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600',
+      url: 'https://theordinary.com',
+      tags: ['skincare', 'minimal', 'natural'],
+      category: 'beauty'
+    },
+    {
+      id: 'fallback-3',
+      name: 'Oversized blazer',
+      label: 'Oversized blazer',
+      brand: 'Zara',
+      price: 89,
+      image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600',
+      url: 'https://zara.com',
+      tags: ['quiet luxury', 'minimal'],
+      category: 'clothing'
+    },
+  ]
 export default function SwipePage() {
     const router = useRouter()
-    const [cards, setCards] = useState([])
+    const [cards, setCards] = useState(FALLBACK_CARDS)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [likes, setLikes] = useState([])
     const [dislikes, setDislikes] = useState([])
     const [animating, setAnimating] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const dragStart = useRef(null)
     const [dragOffset, setDragOffset] = useState(0)
 

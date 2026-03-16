@@ -3,6 +3,14 @@ import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import ProductCard from '@/components/ProductCard'
 
+function cleanQuery(q) {
+    const stopWords = ['bottled and jarred packaged goods', 'bottle', 'fluid', 'liquid']
+    let cleaned = decodeURIComponent(q)
+    stopWords.forEach(w => {
+      cleaned = cleaned.replace(new RegExp(w, 'gi'), '').trim()
+    })
+    return cleaned.charAt(0).toUpperCase() + cleaned.slice(1)
+}
 export default function Results() {
     const searchParams = useSearchParams()
     const query = searchParams.get('q') || ''
@@ -40,7 +48,7 @@ export default function Results() {
         <main className="min-h-screen bg-black text-white px-4 py-10 max-w-4xl mx-auto">
             <div className="mb-8"> 
                 <p className="text-zinc-500 text-sm mb-1">Showing dupes for</p>
-                <h1 className="text-2xl font-bold">{decodeURIComponent(query)}</h1>
+                <h1 className="text-2xl font-bold">{cleanQuery(query)}</h1>
             </div>
             {!loading && originalProduct?.price && (
                 <div className="mb-6 p-4 border border-zinc-700 rounded-2xl flex items-center gap-4 bg-zinc-900/50">

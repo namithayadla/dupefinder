@@ -8,7 +8,7 @@ export async function POST(request) {
     })
 
     try {
-        const results = await Promise.all(
+        const results = await Promise.allSettled(
             queries.map(async (q) => {
                 const res = await fetch(
                     `https://serpapi.com/search.json?engine=google_shopping&q=${encodeURIComponent(q.query)}&api_key=${process.env.SERPAPI_KEY}&num=5`
@@ -27,7 +27,7 @@ export async function POST(request) {
                 }))
             })
         )
-        const flat = results.flat()
+        const flat = results.filter(r => r.status === 'fulfilled').flatMap(r => r.value)
         const seen = new Set()
         const deduped = flat.filter(item => {
             const key = item.name?.toLowerCase().slice(0, 30)
@@ -201,5 +201,5 @@ function buildSwipeQueries({ styles, categories, colorSeason, allSeasons, swipeT
 
     const rotated = [...queries.slice(offset % queries.length), ...queries.slice(0, offset % queries.length)]
 
-  return rotated.slice(0, 6)
+  return rotated.slice(0, 3)
 }
